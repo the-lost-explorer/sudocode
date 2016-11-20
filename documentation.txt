@@ -1,0 +1,134 @@
+//SERVER DOCUMENTATION ver 1.0
+  DATE: 19-11-16
+  
+  HTML PAGES SERVED
+	1. / : Home - The first page.
+	2. /login.html : Login page. 
+	3. /about.html : About us.
+	4. /settings.html : Set up personal info and password.
+	5. /user.html : Shows user specific profile page.
+	6. /dashboard.html : Shows algorithmically ranked articles.
+	7. /categories.html : Shows category wise sorted articles.
+	8. /exit.html : Logout page.
+	
+  DATABASE SCHEMA
+	type: postgresql
+	tables: users, categories, articles, comments, popularity, article-categories, reports
+	
+	1. users:
+		id, username, password, photo, bio, state = def: OFF
+		primary key: id
+	2. categories:
+		id, name
+		primary key: id
+	3. articles:
+		id, uid, title, content, datetime, lastmodified = def: never
+		primary key: id
+		foreign keys: uid with id from users
+	4. comments:
+		id, uid, aid, content, datetime, lastmodified = def: never
+		primary key: id
+		foreign keys: uid with id from users
+					  aid with id from articles
+	5. popularity:
+		aid, value
+		primary key: none
+		foreign key: aid with id from articles
+	6. article-categories:
+		aid, cid
+		primary key: none
+		foreign keys: aid with id from articles
+					  cid with id from categories
+	7. reports:
+	    id, aid, comments
+		primary key: none
+		foreign key: aid with id from articles
+		
+	REQUESTS:
+	
+	1. GET: '/jquery/jquery-2.2.0.min.js' 
+			returns jquery file
+	2. GET: '/hash/:input'
+			returns hash of input string
+	3. GET: '/check-login'
+			returns the status of login of the current client
+	4. POST: '/login'
+			 BODY: username
+			 	   password
+			 checks body from 'username', 'password' from 'users'
+			 SET state = ON
+			 sets cookie.auth with 'id' from 'users'
+	5. GET: '/logout'
+			removes the user id from cookie.auth
+	6. POST: '/create-article'
+			 BODY: userID
+				   title
+				   content
+				   categories
+			Adds the article to 'articles' and categories to 'article-categories'
+	7. POST: '/edit-article'
+			 BODY: aid
+				   title
+				   content
+			Edit the article and set 'lastmodified' from 'articles' to current datetime
+	8. GET: '/delete-article/?articleId=aid'
+			CHECK cookie.auth.userId = uid from 'articles'
+			DELETE article 'aid' from 'articles'
+	9. POST: '/create-comment'
+			 BODY: uid
+				   aid
+				   content
+			Adds the comment to 'comments' 
+	10.POST: '/edit-comment'
+			 BODY: id
+				   content
+			Edit the comment and set 'lastmodified' from 'comments' to current datetime
+	11.GET: '/delete-comment/?commentId=cid'
+			CHECK cookie.auth.userId = uid from 'comments'
+			DELETE comment 'cid' from 'comments'
+	12.GET: '/get-articles/?categoryId=cid'
+			SELECT all articles WHERE cid = 'id' from 'categories' SORT by 'datetime'
+	13.GET: '/get-articles/'
+			SELECT articles from 'articles' and pass to article_sort();
+	14.GET: '/get-articles/?userId=uid'
+			SELECT all articles WHERE uid = 'id' from 'users' SORT by 'datetime'
+	15.GET: '/get-comments/?articleId=aid'
+			SELECT all comments WHERE aid='id' from 'articles' SORT by 'datetime'
+	16.GET: '/get-reports/?userID=uid'
+			SELECT all from report if uid is authorised SORT by 'datetime'
+	17.GET: '/add-popularity/?articleId=aid'
+			SELECT from 'popularity' WHERE aid = 'aid'
+			INCREMENT BY 1
+			MODIFY
+	18.GET: '/low-popularity/?articleId=aid'
+			SELECT from 'popularity' WHERE aid = 'aid'
+			DECREMENT BY 1
+			MODIFY
+	19.POST: '/create-report'
+			 BODY: aid
+				   comment
+			Add report to 'reports'
+	20.POST: '/change-password'
+			 BODY: oldpassword
+				   newpassword
+			EDIT password in 'password' from 'users'
+	21.POST: '/edit-profile'
+			 BODY: photo
+				   username
+				   bio
+			CHECK if 'username' does not exist in 'users'
+			UPDATE in 'users' 
+	22.GET: '/ui/:fileName'
+			return fileName
+	23.GET: '/get-userlist'
+			return 'id' and 'photo' from 'users'
+	24.GET: '/get-articlelist'
+			return 'id' and 'title' from 'articles'
+	25.GET: '/deactivate/?userId=uid'
+			SET state = OFF of user where uid = 'id' from 'users'
+			       
+	FUNCTIONS:
+	
+	def article_sort(){
+		//SORT THE ARTICLES w.r.t. popularity and datetime
+	}
