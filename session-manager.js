@@ -7,13 +7,14 @@ function hash(input, salt) {
 
 function isLogged(req, pool, callback){
   if(req.session && req.session.auth && req.session.auth.userId){
-    pool.query('SELECT * FROM sudocode.users WHERE id = $1', [req.session.auth.userId], function(err, result){
-      if(err){
+    pool.any('SELECT * FROM sudocode.users WHERE id = $1', [req.session.auth.userId])
+      .then(function(data){
+        //success
+        if(callback){ callback(data[0].username);}
+      })
+      .catch(function(error){
         if(callback){ callback("error");}
-      } else{
-        if(callback){ callback(result.rows[0].username);}
-      }
-    });
+      });
   }else{
     if(callback){ callback("false");}
   }
@@ -38,31 +39,37 @@ exports.checkLogin = function(req, res, pool){
   });
 }
 
+exports.checkLoginf = function(req, pool, callback){
+  isLogged(req, pool, function(result){
+    if(result=="false"){
+      if(callback){calback("false");}
+    }else if(result=="error"){
+      if(callback){callback("error");}
+    }else{
+      if(callback){callback(result);}
+    }
+  });
+}
+
 exports.login =  function(req, res, pool) {
    var username = req.body.username;
    var password = req.body.password;
-   pool.query('SELECT * FROM sudocode.users WHERE username = $1', [username], function (err, result) {
-      if (err) {
-          res.status(500).send(err.toString());
-      } else {
-          if (result.rows.length === 0) {
-              res.status(403).send('username/password is invalid');
-          } else {
-              // Match the password
-              var dbString = result.rows[0].password;
-              var salt = dbString.split('$')[2];
-              var hashedPassword = hash(password, salt); // Creating a hash based on the password submitted and the original salt
-              if (hashedPassword === dbString) {
-                // Set the session
-                req.session.auth = {userId: result.rows[0].id};
-                // set cookie with a session id
-                res.send('credentials correct!');
-              } else {
-                res.status(403).send('username/password is invalid');
-              }
-          }
-      }
-   });
+   pool.any('SELECT * FROM sudocode.users WHERE username = $1', [username])
+    .then(function(data){
+        var dbString = data[0].password;
+        var salt = dbString.split('$')[2];
+        var hashedPassword = hash(password, salt);
+        if(hashedPassword==dbString){
+          req.session.auth = {userId: data[0].id};
+          res.send('credentials correct!');
+        }else{
+          res.status(403).send('username/password is invalid');
+        }
+    })
+    .catch(function(error){
+      console.log(error.toString());
+        res.status(500).send(error.toString());
+    });
 }
 
 exports.logout = function(req, res, pool){

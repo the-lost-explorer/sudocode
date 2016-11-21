@@ -1,7 +1,7 @@
 var express = require('express');
 var morgan = require('morgan');
 var path = require('path');
-var Pool = require('pg').Pool;
+var pgp = require('pg-promise')();
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var sessionManager = require('./session-manager.js');
@@ -45,7 +45,7 @@ app.get('/hash/:input', function(req, res) {
   sessionManager.getHash(req, res);
 });
 
-var pool = new Pool(config);
+var pool = pgp(config);
 //session management
 app.get('/check-login', function(req, res){
    sessionManager.checkLogin(req,res,pool);
