@@ -7,12 +7,13 @@ function hash(input, salt) {
 
 function isLogged(req, pool, callback){
   if(req.session && req.session.auth && req.session.auth.userId){
-    pool.any('SELECT * FROM sudocode.users WHERE id = $1', [req.session.auth.userId])
+    pool.one('SELECT * FROM sudocode.users WHERE id = $1', [req.session.auth.userId])
       .then(function(data){
         //success
-        if(callback){ callback(data[0].username);}
+        if(callback){ callback(data.username);}
       })
       .catch(function(error){
+        console.log(error + ' isLogged');
         if(callback){ callback("error");}
       });
   }else{
@@ -39,14 +40,14 @@ exports.checkLogin = function(req, res, pool){
   });
 }
 
-exports.checkLoginf = function(req, pool, callback){
+exports.checkLoginf = function(req, pool){
   isLogged(req, pool, function(result){
     if(result=="false"){
-      if(callback){calback("false");}
+      return "false";
     }else if(result=="error"){
-      if(callback){callback("error");}
+      return "error";
     }else{
-      if(callback){callback(result);}
+      return result;
     }
   });
 }
@@ -54,22 +55,27 @@ exports.checkLoginf = function(req, pool, callback){
 exports.login =  function(req, res, pool) {
    var username = req.body.username;
    var password = req.body.password;
-   pool.any('SELECT * FROM sudocode.users WHERE username = $1', [username])
-    .then(function(data){
-        var dbString = data[0].password;
-        var salt = dbString.split('$')[2];
-        var hashedPassword = hash(password, salt);
-        if(hashedPassword==dbString){
-          req.session.auth = {userId: data[0].id};
-          res.send('credentials correct!');
-        }else{
-          res.status(403).send('username/password is invalid');
-        }
-    })
-    .catch(function(error){
+   pool.task(function(t){
+     return t.batch([t.one('SELECT * FROM sudocode.users WHERE username = $1', [username]),
+                     t.none('UPDATE sudocode.users set state=$1 where username = $2', [true,username])
+     ]);
+   })
+   .then(function(data){
+     var dbString = data[0].password;
+     var salt = dbString.split('$')[2];
+     var hashedPassword = hash(password, salt);
+     if(hashedPassword==dbString){
+       req.session.auth = {userId: data[0].id};
+       console.log(data[0].id + ' successfully logged in!');
+       res.status(200).send('credentials correct!');
+     }else{
+       res.status(403).send('username/password is invalid');
+     }
+   })
+   .catch(function(error){
       console.log(error.toString());
-        res.status(500).send(error.toString());
-    });
+      res.status(500).send(error.toString());
+   });
 }
 
 exports.logout = function(req, res, pool){

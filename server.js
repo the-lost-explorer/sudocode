@@ -14,6 +14,7 @@ var config = {
     port: '5432',
     password: process.env.DB_PASSWORD
 };
+var pool = pgp(config);
 
 var app = express();
 app.use(morgan('combined'));
@@ -45,7 +46,6 @@ app.get('/hash/:input', function(req, res) {
   sessionManager.getHash(req, res);
 });
 
-var pool = pgp(config);
 //session management
 app.get('/check-login', function(req, res){
    sessionManager.checkLogin(req,res,pool);
