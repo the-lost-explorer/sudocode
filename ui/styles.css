@@ -1,0 +1,37 @@
+
+
+div.titlebar{
+font-family:courier;
+font-weight:bold;
+font-size:30;
+color:green;
+background-color:black;
+padding:15;
+}
+
+#tittxt{
+	align:left;
+}
+
+
+body{
+	margin:0;
+}
+
+
+table{
+	color: green;
+	font-weight:bold;
+	font-family:courier;
+	font-size:20;
+	
+}
+
+div.navbar{
+	margin:0;
+}
+
+#login{
+	background-color:black;
+	color:white;
+}
