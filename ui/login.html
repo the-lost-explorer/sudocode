@@ -4,17 +4,62 @@
 <head>
 	<title>login</title>
 
+		<!--icon-->
+		<link rel="shortcut icon" href="logo.ico" />
+
+		<!--stylesheets-->
 		<link rel="stylesheet" href="styles.css">
-		<!--<script src = "C:\Users\Amey\Desktop\ProjectX\jquery\dist\jquery.min.js"></script>*-->
+		<link rel="stylesheet" href="font-awesome-4.7.0\font-awesome-4.7.0\css\font-awesome.min.css">
+		<link rel="stylesheet" href="bootstrap-3.3.7-dist\css\bootstrap.min">
+		<link rel="stylesheet" href="bootstrap-3.3.7-dist\css\bootstrap-theme.min">
+
+		<!--scripts-->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 		<script src="jqueryindex.js"></script>
-		<link rel="shortcut icon" href="logo.ico" />
-		<link rel="stylesheet" href="font-awesome-4.7.0\font-awesome-4.7.0\css\font-awesome.min.css">
-</head>
 
+
+</head>
 <body>
+<!--
 <div id="text">
 Working on dynamically chaging part of the page using ajax.
+</div>
+ -->
+
+ <div class="signin-form">
+
+ <div class="container">
+
+
+       <form class="form-signin" method="post" id="login-form">
+
+        <h2 class="form-signin-heading">Log In to WebApp.</h2><hr />
+
+        <div id="error">
+        <!-- error will be shown here ! -->
+        </div>
+
+        <div class="form-group">
+        <input type="email" class="form-control" placeholder="Email address" name="user_email" id="user_email" />
+        <span id="check-e"></span>
+        </div>
+
+        <div class="form-group">
+        <input type="password" class="form-control" placeholder="Password" name="password" id="password" />
+        </div>
+
+      <hr />
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-default" name="btn-login" id="btn-login">
+      <span class="glyphicon glyphicon-log-in"></span> &nbsp; Sign In
+   </button>
+        </div>
+
+      </form>
+
+    </div>
+
 </div>
 </body>
 </home>
