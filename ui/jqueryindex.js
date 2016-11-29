@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 $(document).ready(function(){
 
 	setInterval(function(){
