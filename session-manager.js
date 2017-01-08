@@ -1,8 +1,22 @@
+/**
+This file manages the session actions
+It contains the following features:
+  getHash with any string input
+  checkLogin with auth cookie
+  login with user ID and password
+  logout with auth cookie
+  checkId with user ID
+*/
 var crypto = require('crypto');
+var path = require('path');
 
 function hash(input, salt) {
     var hashed = crypto.pbkdf2Sync(input, salt, 10000, 512, 'sha512');
     return ["pbkdf2", "10000", salt, hashed.toString('hex')].join('$').toString('hex')  ;
+}
+
+exports.hash = function(input, salt){
+    return hash(input, salt);
 }
 
 function isLogged(req, pool, callback){
@@ -40,24 +54,24 @@ exports.checkLogin = function(req, res, pool){
   });
 }
 
-exports.checkLoginf = function(req, pool){
+exports.checkLoginf = function(req, pool, callback){
   isLogged(req, pool, function(result){
     if(result=="false"){
-      return "false";
+      callback("false");
     }else if(result=="error"){
-      return "error";
+      callback("error");
     }else{
-      return result;
+      callback(result);
     }
   });
 }
 
 exports.login =  function(req, res, pool) {
-   var username = req.body.username;
+   var id = req.body.id;
    var password = req.body.password;
    pool.task(function(t){
-     return t.batch([t.one('SELECT * FROM sudocode.users WHERE username = $1', [username]),
-                     t.none('UPDATE sudocode.users set state=$1 where username = $2', [true,username])
+     return t.batch([t.one('SELECT * FROM sudocode.users WHERE id = $1', [id]),
+                     t.none('UPDATE sudocode.users set state=$1 where id = $2', [true,id])
      ]);
    })
    .then(function(data){
@@ -90,4 +104,14 @@ exports.logout = function(req, res, pool){
       res.status(200).send("Logged out - " + username + "!");
     }
   });
+}
+
+exports.checkId = function(req, res, pool){
+  pool.one("SELECT * FROM sudocode.users WHERE id = $1", [req.query.id])
+    .then(function(result){
+      res.status(200).send(result.username);
+    })
+    .catch(function(error){
+      res.status(500).send(false);
+    });
 }

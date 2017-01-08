@@ -1,0 +1,51 @@
+body{
+    background-color: #F2F2F2;
+}
+
+
+.article{
+  display: inline-block;
+  background-color: white;
+  width: 650px;
+  margin-bottom: 30px;
+  box-shadow: 0 3px 5px 0 rgba(0,1,1,.1);
+}
+
+.username{
+  float: left;
+  font-size: 24px;
+}
+
+.history{
+  float: right;
+  color: grey;
+  font-size: 14px;
+  font-weight: lighter;
+  margin-right: 10px;
+  margin-top: 5px;
+}
+
+.articletitle{
+  color: Black;
+  font-size: 20px;
+}
+
+.articlecontent{
+  text-align:left;
+}
+
+.commentbutton{
+  width: 600px;
+  height: 10px;
+  color: green;
+  cursor: text;
+  font-size: 12px;
+  text-align: left;
+  padding: 5px 15px 20px 5px;
+  font-weight: normal;
+}
+
+.commentbutton:hover{
+  background-color: white;
+  color: green;
+}

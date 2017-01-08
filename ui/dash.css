@@ -1,0 +1,130 @@
+
+
+.categories_tab{
+  background-color: #F2F2F2;
+  display: inline-block;
+  width: 200px;
+  height: 50px;
+  margin: 5px;
+  line-height: 50px;
+  border: 0.1px solid black;
+  text-align: center;
+}
+
+.span{
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+
+
+}
+
+.categories_tab:hover{
+  background-color: green;
+  color: #F2F2F2;
+  cursor: hand;
+}
+
+#post{
+  background-color: #F2F2F2;
+  display: inline-block;
+  width: 600px;
+  height: 250px;
+  position: relative;
+
+}
+
+
+
+#postbutton{
+  padding: 5px 5px 20px 5px;
+  display: inline-block;
+  height: 40px;
+  background-color:transparent;
+  text-align: center;
+  text-decoration: none;
+  font-size: 20px;
+  cursor: pointer;
+  border:2px solid #4CAF50;
+  font-family: courier;
+  font-weight:bold;
+  color:green;
+  border-radius: 0px;
+}
+
+
+
+#postinput{
+  width: 450px;
+  heigth: 200px;
+  border: 0px;
+}
+
+#postcategory{
+  padding: 5px 5px 20px 5px;
+  display: inline-block;
+  height: 40px;
+  background-color:transparent;
+  text-align: center;
+  text-decoration: none;
+  font-size: 20px;
+  cursor: pointer;
+	border:2px solid #4CAF50;
+	font-family: courier;
+	font-weight:bold;
+	color:green;
+  border-radius: 0px;
+}
+
+
+.categoriesdrop:hover{
+  background-color: green;
+  color: white;
+  cursor: hand;
+}
+
+
+
+#cross{
+  color:white;
+}
+
+#cross:hover{
+  color:green;
+}
+
+
+.hashtag{
+  display: inline-block;
+  background-color: white;
+  border-radius: 100px;
+
+}
+
+
+#dot{
+  visibility: hidden;
+}
+
+#posttrigger{
+  width: 450px;
+  border: 2px solid green;
+  background-color: white;
+  color: green;
+  cursor: text;
+  border-radius: 0px;
+  font-weight: normal;
+
+}
+.ui-resizable-se {
+    bottom: 17px;
+  }
+
+  #categorydiv{
+      margin-top: 5px;
+  }
+
+
+  #text{
+    overflow-y: scroll;
+  }

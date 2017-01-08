@@ -1,0 +1,75 @@
+<html>
+<head>
+	<title>sudocode</title>
+
+		<link rel="stylesheet" href="http://localhost:8082/ui/styles.css">
+		<link rel="stylesheet" href="http://localhost:8082/ui/dash.css">
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<script type="text/javascript" src="http://localhost:8082/ui/jqueryindex.js"></script>
+		<script type="text/javascript" src="http://localhost:8082/ui/dash.js"></script>
+		<script type="text/javascript" src="http://localhost:8082/ui/autosize.js"></script>
+		<script type="text/javascript" src="http://localhost:8082/ui/articles.js"></script>
+		<link rel="shortcut icon" href="logo.ico" />
+		<link rel="stylesheet" href="http://localhost:8082/ui/?filePath=font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="http://localhost:8082/ui/articles.css">
+		<meta name="viewport" content="width=device-width">
+</head>
+<body>
+
+<div id="dashmsg">
+		Welcome.
+</div><br>
+
+<div class="container">
+  <!-- Trigger the modal with a button -->
+	<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" id="posttrigger">
+		  What's on your mind?
+		</button>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialogue">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"><input type="text" placeholder="Title" id="title"></input></h4>
+        </div>
+        <div class="modal-body">
+					<div class="media-body">
+
+													 <div class="form-group" style="padding:12px;">
+														<textarea class="form-control animated" placeholder="Update your status" id="postinput"></textarea>
+													 </div>
+
+					</div>
+
+
+
+					<script>
+					$(function(){
+					$('.normal').autosize();
+					$('.animated').autosize({append: "\n"});
+					});
+					</script>
+        </div>
+				<div id="categorydiv"></div>
+        <div class="modal-footer">
+
+					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="postcategory">Categories<span class="caret"></span></button>
+
+						<ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu1" id="catdrop"></ul>
+
+
+          <button type="button" class="btn btn-default" data-dismiss="modal"  id="postbutton">Post</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+<div id="dashbody"><br><br>
+</div>
+
+</body>
+</html>

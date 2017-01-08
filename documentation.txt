@@ -1,20 +1,20 @@
 //SERVER DOCUMENTATION ver 1.0
   DATE: 19-11-16
-  
+
   HTML PAGES SERVED
 	1. / : Home - The first page.
-	2. /login.html : Login page. 
+	2. /login.html : Login page.
 	3. /about.html : About us.
 	4. /settings.html : Set up personal info and password.
 	5. /user.html : Shows user specific profile page.
 	6. /dashboard.html : Shows algorithmically ranked articles.
 	7. /categories.html : Shows category wise sorted articles.
 	8. /exit.html : Logout page.
-	
+
   DATABASE SCHEMA
 	type: postgresql
 	tables: users, categories, articles, comments, popularity, article-categories, reports
-	
+
 	1. users:
 		id, username, password, photo, bio, state = def: OFF
 		primary key: id
@@ -26,16 +26,16 @@
 		primary key: id
 		foreign keys: uid with id from users
 	4. comments:
-		id, uid, aid, content, datetime, lastmodified = def: never
+		id, aid, uid, content, datetime, lastmodified = def: never
 		primary key: id
 		foreign keys: uid with id from users
 					  aid with id from articles
 	5. popularity:
-		aid, value
+		aid, username //who voted for the article!
 		primary key: none
 		foreign key: aid with id from articles
 	6. article-categories:
-		aid, cid
+		aid, category
 		primary key: none
 		foreign keys: aid with id from articles
 					  cid with id from categories
@@ -43,10 +43,10 @@
 	    id, aid, comments
 		primary key: none
 		foreign key: aid with id from articles
-		
+
 	REQUESTS:
-	
-	1. GET: '/jquery/jquery-2.2.0.min.js' 
+
+	1. GET: '/jquery/jquery-2.2.0.min.js'
 			returns jquery file
 	2. GET: '/hash/:input'
 			returns hash of input string
@@ -61,27 +61,25 @@
 	5. GET: '/logout'
 			removes the user id from cookie.auth
 	6. POST: '/create-article'
-			 BODY: userID
-				   title
-				   content
-				   categories
+			 BODY: title
+				     content
+				     categories
 			Adds the article to 'articles' and categories to 'article-categories'
 	7. POST: '/edit-article'
-			 BODY: aid
-				   title
-				   content
+			 BODY: id i.e. aid
+				     title
+				     content
 			Edit the article and set 'lastmodified' from 'articles' to current datetime
 	8. GET: '/delete-article/?articleId=aid'
 			CHECK cookie.auth.userId = uid from 'articles'
 			DELETE article 'aid' from 'articles'
 	9. POST: '/create-comment'
-			 BODY: uid
-				   aid
-				   content
-			Adds the comment to 'comments' 
+			 BODY: aid
+				     content
+			Adds the comment to 'comments'
 	10.POST: '/edit-comment'
 			 BODY: id
-				   content
+				     content
 			Edit the comment and set 'lastmodified' from 'comments' to current datetime
 	11.GET: '/delete-comment/?commentId=cid'
 			CHECK cookie.auth.userId = uid from 'comments'
@@ -117,7 +115,7 @@
 				   username
 				   bio
 			CHECK if 'username' does not exist in 'users'
-			UPDATE in 'users' 
+			UPDATE in 'users'
 	22.GET: '/ui/:fileName'
 			return fileName
 	23.GET: '/get-userlist'
@@ -126,9 +124,9 @@
 			return 'id' and 'title' from 'articles'
 	25.GET: '/deactivate/?userId=uid'
 			SET state = OFF of user where uid = 'id' from 'users'
-			       
+
 	FUNCTIONS:
-	
+
 	def article_sort(){
 		//SORT THE ARTICLES w.r.t. popularity and datetime
 	}
