@@ -9,6 +9,7 @@
   line-height: 50px;
   border: 0.1px solid black;
   text-align: center;
+
 }
 
 .span{
@@ -128,3 +129,9 @@
   #text{
     overflow-y: scroll;
   }
+
+
+#dashbody{
+  width: 100%;
+  text-align: center;
+}
